@@ -1,6 +1,6 @@
 # HerokuAutoscaler
 
-TODO: Write a gem description
+WIP (Work In Progress)
 
 ## Installation
 
