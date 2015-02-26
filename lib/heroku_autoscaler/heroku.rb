@@ -3,7 +3,7 @@ require "heroku-api"
 module HerokuAutoscaler
   class Heroku
     def account
-      @account ||= Heroku::API.new(api_key: ENV.fetch("HEROKU_API_KEY"))
+      @account ||= ::Heroku::API.new(api_key: ENV.fetch("HEROKU_API_KEY"))
     end
 
     def dynos

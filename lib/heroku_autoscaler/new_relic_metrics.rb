@@ -1,7 +1,7 @@
 require "faraday"
 require "heroku_autoscaler/models"
 
-module Autoscaler
+module HerokuAutoscaler
   class NewRelicMetrics
     BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch('NEW_RELIC_APP_ID')}"
     METRICS_URL       = "#{BASE_URL}/metrics.json"
