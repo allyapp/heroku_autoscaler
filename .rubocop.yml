@@ -1,0 +1,48 @@
+AllCops:
+  Include:
+    - '**/Gemfile'
+    - '**/Guardfile'
+  Exclude:
+    - 'Guardfile'
+
+AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+  EnforcedLastArgumentHashStyle: ignore_implicit
+
+TrailingComma:
+  Enabled: false
+
+# Here's why: https://gist.github.com/gshaw/4adbebcba6ac954636e9
+ClassAndModuleChildren:
+  EnforcedStyle: nested
+
+ClassLength:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+DoubleNegation:
+  Enabled: false
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/LineLength:
+  Max: 140
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false

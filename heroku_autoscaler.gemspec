@@ -6,10 +6,10 @@ require 'heroku_autoscaler/version'
 Gem::Specification.new do |spec|
   spec.name          = "heroku_autoscaler"
   spec.version       = HerokuAutoscaler::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.authors       = ["Yone Lacort"]
+  spec.email         = ["yonedev@gmail.com"]
+  spec.summary       = %q{Heroku dynos autoscaling}
+  spec.description   = %q{Heroku dynos autoscaling}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,6 +18,21 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "mail"
+  spec.add_dependency "heroku-api"
+  spec.add_dependency "faraday"
+  spec.add_dependency "virtus"
+  spec.add_dependency "dalli"
+
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "vcr"
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "ruby_gntp"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "guard-rubocop"
 end
