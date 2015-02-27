@@ -1,0 +1,176 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.heroku.com/apps/test-heroku-app
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip
+      User-Agent:
+      - heroku-rb/0.3.22
+      X-Ruby-Version:
+      - 2.1.3
+      X-Ruby-Platform:
+      - x86_64-darwin13.0
+      Authorization:
+      - Basic OjJiM2RjMTliLThhYTYtNGJiYi1hNDBiLTdkOTAxN2FkYjA1Nw==
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Feb 2015 13:52:32 GMT
+      Etag:
+      - '"25bdf1818923c48ebd63e074f470b962"'
+      Last-Modified:
+      - Fri, 27 Feb 2015 13:39:14 GMT
+      Oauth-Scope:
+      - global
+      Oauth-Scope-Accepted:
+      - global read read-protected write write-protected
+      Request-Id:
+      - 1e4bb22c-ba2b-4de3-a90a-ca7381ab200d
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Status:
+      - 200 OK
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Ratelimit-Remaining:
+      - '2399'
+      X-Runtime:
+      - '0.029731912'
+      Content-Length:
+      - '387'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAIJz8FQAA4RRW27CMBC8CvJ3IM4Lgr84Qy8QmXgJFk7s+gGiiLt3Q0La
+        oKL+2TszuzuzNyIFYVmelElJtxHpeAuEEa6UvQqwS27k0nneyK4hERHXTjvC
+        0ohctD2BxTeNiAWjKye/UFis06ykySYiToXmWczyPC9yVGGn+oTtaxDckl75
+        GcB5ENWIdEGpiNQWuIe+5oPr6bo1CjyQcVYrG/uOoC8d2EqAkh327jxhB64c
+        PAFouVSoEHAGpQ1a2D29rrDL1GDIYVhHaBR1Y+n2CGwAuDHVPL6B+ibA1RGs
+        PgVUjaP23EE1SV7RIQVRcT8tAgceFH69DegoGDEj3PEssK+C7Q0evTeOxfH/
+        i8Q4q5F+1OFrN8A9xv6UI6ffPkglDJ6tMlafpcBNBLjaSuOl7g19hP31cbJm
+        +EN4cUVSmhQxTeOULuiWpWuW5IslLSlFIrf1UZ5n/i0owMhexZsFTVlCWZ5M
+        4t/RzIgFy7Y/U+7fAAAA//8DAJCUX/b/AgAA
+    http_version: 
+  recorded_at: Fri, 27 Feb 2015 13:52:32 GMT
+- request:
+    method: get
+    uri: https://api.newrelic.com/v2/applications/6425276/metrics/data.json?from=2015-02-27%2013:34:00%20%2B0000&names%5B%5D=WebFrontend/QueueTime&summarize=true&to=2015-02-27%2013:35:00%20%2B0000
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      X-Api-Key:
+      - 1ee6ffffef5e1f7e609d86aea050f6d123nasd124asd
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 27 Feb 2015 13:52:33 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '479'
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      X-Runtime:
+      - '0.048215'
+    body:
+      encoding: UTF-8
+      string: '{"metric_data":{"from":"2015-02-27T13:34:00+00:00","to":"2015-02-27T13:35:00+00:00","metrics":[{"name":"WebFrontend/QueueTime","timeslices":[{"from":"2015-02-27T13:34:00+00:00","to":"2015-02-27T13:34:11+00:00","values":{"average_response_time":1.35,"calls_per_minute":2.0,"call_count":0,"min_response_time":0.4,"max_response_time":2.3,"average_exclusive_time":1.35,"average_value":0.0014,"total_call_time_per_minute":0.0027,"requests_per_minute":2.0,"standard_deviation":0}}]}]}}'
+    http_version: 
+  recorded_at: Fri, 27 Feb 2015 13:52:33 GMT
+- request:
+    method: post
+    uri: https://api.heroku.com/apps/test-heroku-app/ps/scale?qty=1&type=web
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip
+      User-Agent:
+      - heroku-rb/0.3.22
+      X-Ruby-Version:
+      - 2.1.3
+      X-Ruby-Platform:
+      - x86_64-darwin13.0
+      Authorization:
+      - Basic OjJiM2RjMTliLThhYTYtNGJiYi1hNDBiLTdkOTAxN2FkYjA1Nw==
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html;charset=utf-8
+      Date:
+      - Fri, 27 Feb 2015 13:52:34 GMT
+      Oauth-Scope:
+      - global
+      Oauth-Scope-Accepted:
+      - global write write-protected
+      Request-Id:
+      - 9a6f7066-dce9-4a81-8e98-d8fa20573c2e
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Status:
+      - 200 OK
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Ratelimit-Remaining:
+      - '2398'
+      X-Runtime:
+      - '0.193253911'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '27'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAKJ28FQAAzIEAAAA//8DALfv3IMBAAAA
+    http_version: 
+  recorded_at: Fri, 27 Feb 2015 13:52:34 GMT
+recorded_with: VCR 2.9.3

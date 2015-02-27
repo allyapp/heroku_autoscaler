@@ -27,12 +27,15 @@ describe HerokuAutoscaler::Metric do
 
   describe "parsing from hash set attributes" do
     it "name" do
+      expect(metric.name).to eq(metric_hash["name"])
     end
 
     it "from" do
+      expect(metric.from.to_s).to eq("2015-02-27 10:45:52 +0100")
     end
 
     it "to" do
+      expect(metric.to.to_s).to eq("2015-02-27 10:46:00 +0100")
     end
 
     describe "values" do

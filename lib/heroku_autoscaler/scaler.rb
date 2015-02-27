@@ -22,8 +22,8 @@ module HerokuAutoscaler
 
     def autoscale
       puts "Dynos: #{heroku.dynos}"
-      scale(heroku.dynos + 1) if upscale?
-      scale(heroku.dynos - 1) if downscale?
+      return scale(heroku.dynos + 1) if upscale?
+      return scale(heroku.dynos - 1) if downscale?
     end
 
     private
@@ -37,7 +37,7 @@ module HerokuAutoscaler
     end
 
     def average_response_time
-      @average_response_time ||= queue_time.first.timeslices.first.values.average_response_time
+      queue_time.values.average_response_time
     end
 
     def queue_time
@@ -45,9 +45,12 @@ module HerokuAutoscaler
     end
 
     def scale(new_dynos)
-      heroku.scale_dynos(new_dynos)
-      alerter.restart_event_counters
-      cache.set_now("last-scale")
+      scaled_dynos = heroku.scale_dynos(new_dynos)
+      if scaled_dynos == new_dynos
+        alerter.restart_event_counters
+        cache.set_now("last-scale")
+      end
+      scaled_dynos
     end
 
     def upscale?
@@ -66,7 +69,7 @@ module HerokuAutoscaler
 
     def time_to_scale?(frequency)
       last_autoscale = cache.fetch("last-scale")
-      !last_autoscale || Time.now - last_autoscale > frequency
+      !last_autoscale || now - last_autoscale > frequency
     end
 
     def alerter
@@ -83,6 +86,10 @@ module HerokuAutoscaler
 
     def heroku
       @heroku ||= Heroku.new
+    end
+
+    def now
+      @now ||= Time.now
     end
   end
 end
