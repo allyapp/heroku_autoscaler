@@ -7,7 +7,7 @@ describe HerokuAutoscaler::NewRelicMetrics do
         new_relic_metrics.queue_time
       end
     end
-    let(:now)       { Time.new(2015,02,27,10,46,0) }
+    let(:now)       { Time.new(2015, 02, 27, 10, 46, 0) }
     let(:from_time) { (now - 60).to_s }
     let(:to_time)   { now.to_s }
     before do

@@ -3,7 +3,7 @@ require "heroku_autoscaler/models"
 
 module HerokuAutoscaler
   class NewRelicMetrics
-    BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch("NEW_RELIC_APP_ID")}"
+    BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch('NEW_RELIC_APP_ID')}"
     METRICS_URL       = "#{BASE_URL}/metrics.json"
     METRICS_DATA_URL  = "#{BASE_URL}/metrics/data.json"
 
@@ -17,10 +17,10 @@ module HerokuAutoscaler
 
     def queue_time
       execute(METRICS_DATA_URL,
-        "names[]"   => "WebFrontend/QueueTime",
-        "from"      => from_time,
-        "to"        => to_time,
-        "summarize" => true
+              "names[]"   => "WebFrontend/QueueTime",
+              "from"      => from_time,
+              "to"        => to_time,
+              "summarize" => true
       )
     end
 

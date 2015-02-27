@@ -1,22 +1,22 @@
 describe HerokuAutoscaler::Metric do
   let(:metric_hash) do
     {
-      "name" => "WebFrontend/QueueTime",
+      "name"       => "WebFrontend/QueueTime",
       "timeslices" => [
         {
-          "from" => "2015-02-27T09:45:52+00:00",
-          "to" => "2015-02-27T09:46:00+00:00",
+          "from"   => "2015-02-27T09:45:52+00:00",
+          "to"     => "2015-02-27T09:46:00+00:00",
           "values" => {
-            "average_response_time" => 2.0,
-            "calls_per_minute" => 1.94,
-            "call_count" => 0,
-            "min_response_time" => 1.9,
-            "max_response_time" => 2.1,
-            "average_exclusive_time" => 2.0,
-            "average_value" => 0.002,
+            "average_response_time"      => 2.0,
+            "calls_per_minute"           => 1.94,
+            "call_count"                 => 0,
+            "min_response_time"          => 1.9,
+            "max_response_time"          => 2.1,
+            "average_exclusive_time"     => 2.0,
+            "average_value"              => 0.002,
             "total_call_time_per_minute" => 0.0039,
-            "requests_per_minute" => 1.94,
-            "standard_deviation" => 0
+            "requests_per_minute"        => 1.94,
+            "standard_deviation"         => 0
           }
         }
       ]
