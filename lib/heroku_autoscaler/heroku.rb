@@ -15,8 +15,8 @@ module HerokuAutoscaler
     end
 
     def scale_dynos(new_dynos)
+      puts "==> Scaling from #{dynos} to #{new_dynos} dynos"
       account.post_ps_scale(ENV.fetch("HEROKU_APP_NAME"), "web", new_dynos)
-      puts "==> Scaling from #{heroku.dynos} to #{new_dynos} dynos"
     end
   end
 end

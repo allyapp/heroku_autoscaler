@@ -3,9 +3,13 @@ require "heroku_autoscaler/models"
 
 module HerokuAutoscaler
   class NewRelicMetrics
-    BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch('NEW_RELIC_APP_ID')}"
+    BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch("NEW_RELIC_APP_ID")}"
     METRICS_URL       = "#{BASE_URL}/metrics.json"
     METRICS_DATA_URL  = "#{BASE_URL}/metrics/data.json"
+
+    def initialize(options = {})
+      @print = options[:print]
+    end
 
     def metrics_list(page = 1)
       pp execute("#{METRICS_URL}?page=#{page}", {})
@@ -13,25 +17,21 @@ module HerokuAutoscaler
 
     def queue_time
       execute(METRICS_DATA_URL,
-              "names[]"   => "WebFrontend/QueueTime",
-              "from"      => (Time.now - 60).to_s,
-              "to"        => Time.now.to_s,
-              "summarize" => true
+        "names[]"   => "WebFrontend/QueueTime",
+        "from"      => from_time,
+        "to"        => to_time,
+        "summarize" => true
       )
     end
 
     private
 
-    def print(metrics)
-      timeslice = metrics.first.timeslices.first
-      values    = timeslice.values
+    def from_time
+      (Time.now - 60).to_s
+    end
 
-      puts "========================================================"
-      puts "Metric: #{metrics.first.name}"
-      puts "From:   #{timeslice.from}"
-      puts "To:     #{timeslice.to}"
-      puts "RPM:    #{values.calls_per_minute} | AverageResponse: #{values.average_response_time} | MaxResponse: #{values.max_response_time} | MinResponse: #{values.min_response_time}"
-      puts "========================================================"
+    def to_time
+      Time.now.to_s
     end
 
     def execute(url, params)
@@ -44,10 +44,10 @@ module HerokuAutoscaler
     end
 
     def parse_metrics(response)
-      body    = JSON.parse(response.body)
-      metrics = MetricData.new(body["metric_data"]).metrics
-      print(metrics)
-      metrics
+      hash_metrics = JSON.parse(response.body)["metric_data"]["metrics"].first
+      metric = Metric.new(hash_metrics)
+      metric.print_summary if @print
+      metric
     end
   end
 end

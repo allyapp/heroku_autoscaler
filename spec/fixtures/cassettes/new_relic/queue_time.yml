@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.newrelic.com/v2/applications/6473527/metrics/data.json?from=2015-02-27%2010:45:00%20%2B0100&names%5B%5D=WebFrontend/QueueTime&summarize=true&to=2015-02-27%2010:46:00%20%2B0100
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      X-Api-Key:
+      - 1ee6ffffef5e1f7e6a3905803861e3f5309d86aea050f6d
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 27 Feb 2015 09:49:26 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '478'
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      X-Ua-Compatible:
+      - IE=Edge,chrome=1
+      X-Runtime:
+      - '0.044416'
+    body:
+      encoding: UTF-8
+      string: '{"metric_data":{"from":"2015-02-27T09:45:00+00:00","to":"2015-02-27T09:46:00+00:00","metrics":[{"name":"WebFrontend/QueueTime","timeslices":[{"from":"2015-02-27T09:45:52+00:00","to":"2015-02-27T09:46:00+00:00","values":{"average_response_time":2.0,"calls_per_minute":1.94,"call_count":0,"min_response_time":1.9,"max_response_time":2.1,"average_exclusive_time":2.0,"average_value":0.002,"total_call_time_per_minute":0.0039,"requests_per_minute":1.94,"standard_deviation":0}}]}]}}'
+    http_version: 
+  recorded_at: Fri, 27 Feb 2015 09:49:26 GMT
+recorded_with: VCR 2.9.3
