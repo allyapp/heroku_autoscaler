@@ -11,8 +11,8 @@ module HerokuAutoscaler
     attribute :min_response_time,          Float
     attribute :max_response_time,          Float
     attribute :average_exclusive_time,     Float
-    attribute :total_call_time_per_minute, Integer
-    attribute :requests_per_minute,        Integer
+    attribute :total_call_time_per_minute, Float
+    attribute :requests_per_minute,        Float
     attribute :standard_deviation,         Float
 
     def to_s

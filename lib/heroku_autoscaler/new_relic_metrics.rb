@@ -12,7 +12,7 @@ module HerokuAutoscaler
     end
 
     def metrics_list(page = 1)
-      pp execute("#{METRICS_URL}?page=#{page}", {})
+      execute("#{METRICS_URL}?page=#{page}")
     end
 
     def queue_time
@@ -34,13 +34,15 @@ module HerokuAutoscaler
       Time.now.to_s
     end
 
-    def execute(url, params)
-      response = Faraday.get(url, params) do |req|
-        req.headers["X-Api-Key"] = ENV.fetch("NEW_RELIC_API_KEY")
-      end
+    def execute(url, params = {})
+      response = request(url, params)
       parse_metrics(response)
     rescue Faraday::ClientError
       raise NewRelicError
+    end
+
+    def request(url, params)
+      Faraday.get(url, params) { |req| req.headers["X-Api-Key"] = ENV.fetch("NEW_RELIC_API_KEY") }
     end
 
     def parse_metrics(response)
