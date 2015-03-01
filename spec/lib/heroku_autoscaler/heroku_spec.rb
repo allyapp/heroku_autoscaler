@@ -1,5 +1,6 @@
 describe HerokuAutoscaler::Heroku do
-  let(:heroku) { described_class.new }
+  let(:cache)  { HerokuAutoscaler::CacheStore.new }
+  let(:heroku) { described_class.new(cache) }
   let(:heroku_app) do
     double(data: { body: { "dynos" => 3 } })
   end
@@ -30,9 +31,29 @@ describe HerokuAutoscaler::Heroku do
   end
 
   describe "scale_dynos" do
-    it "calls scale_dynos for the heroku app" do
+    before do
+      allow(account).to receive(:post_ps_scale) { double(body: new_dynos) }
+    end
+
+    it "calls post_ps_scale with the right arguments" do
       expect(account).to receive(:post_ps_scale).with(ENV.fetch("HEROKU_APP_NAME"), "web", new_dynos)
       heroku.scale_dynos(new_dynos)
+    end
+
+    context "when the scaling was successful" do
+      it "returns the number of dynos scaled" do
+        expect(heroku.scale_dynos(new_dynos)).to eq(new_dynos)
+      end
+    end
+
+    context "when the scaling was not successful" do
+      before do
+        allow(account).to receive(:post_ps_scale) { double(body: 3) }
+      end
+
+      it "returns nil" do
+        expect(heroku.scale_dynos(new_dynos)).to be_nil
+      end
     end
   end
 end

@@ -21,7 +21,6 @@ describe HerokuAutoscaler::Scaler do
     allow_any_instance_of(described_class).to receive(:metrics) { metrics }
     allow_any_instance_of(described_class).to receive(:average_response_time) { average_response_time }
     allow_any_instance_of(alerter_class).to receive(:failed_upscale_alert)
-    allow_any_instance_of(heroku_class).to receive(:scale_dynos)
   end
 
   RSpec.shared_examples "doesn't scale dynos" do
@@ -74,6 +73,10 @@ describe HerokuAutoscaler::Scaler do
           end
 
           context "and when the dynos are still inferior than the maximum dynos allowed to scale" do
+            before do
+              allow_any_instance_of(heroku_class).to receive(:scale_dynos) { dynos + 1 }
+            end
+
             context "when params are taken from the arguments" do
               it_behaves_like "scaling dynos up"
             end
@@ -131,6 +134,9 @@ describe HerokuAutoscaler::Scaler do
           end
 
           context "when the dynos are still higher than the minimum dynos allowed to scale down" do
+            before do
+              allow_any_instance_of(heroku_class).to receive(:scale_dynos) { dynos - 1 }
+            end
             let(:dynos) { 3 }
 
             context "when params are taken from the arguments" do

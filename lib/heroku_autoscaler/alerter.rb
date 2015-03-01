@@ -1,16 +1,19 @@
+require "heroku_autoscaler/setter"
+
 module HerokuAutoscaler
   class Alerter
+    include Setter
+
     ALERT_FREQUENCY       = 60 # sec
     EXEC_FREQUENCY        = 15 # sec
     FAILED_UPSCALES_ALERT = 4 # Min count of failed upscales to send an alert
     EVENTS                = %w(failed-upscale)
-    SETTINGS = %w(alert_frequency exec_frequency failed_upscales_alert)
 
     attr_accessor :alert_frequency, :exec_frequency, :failed_upscales_alert
 
     def initialize(cache, options = {})
       @cache = cache
-      SETTINGS.each { |setting| send("#{setting}=", setting_value(options, setting)) }
+      writers_setting(options)
     end
 
     def restart_event_counters
@@ -29,14 +32,6 @@ module HerokuAutoscaler
     private
 
     attr_reader :cache
-
-    def setting_value(options, setting)
-      options[setting.to_sym] || env_value(setting) || Object.const_get("#{self.class}::#{setting.upcase}")
-    end
-
-    def env_value(setting)
-      ENV[setting.upcase] && Integer(ENV[setting.upcase])
-    end
 
     def failed_tries(failed_event, freq_upscale)
       failed_event_times = cache.fetch_number(failed_event)

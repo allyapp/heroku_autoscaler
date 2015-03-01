@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.newrelic.com/v2/applications/6473527/metrics/data.json?from=2015-02-27%2010:45:00%20%2B0100&names%5B%5D=WebFrontend/QueueTime&summarize=true&to=2015-02-27%2010:46:00%20%2B0100
+    uri: https://api.newrelic.com/v2/applications/6425276/metrics/data.json?from=2015-02-27%2010:45:00%20%2B0100&names%5B%5D=WebFrontend/QueueTime&summarize=true&to=2015-02-27%2010:46:00%20%2B0100
     body:
       encoding: US-ASCII
       string: ''

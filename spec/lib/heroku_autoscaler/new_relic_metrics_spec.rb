@@ -1,5 +1,6 @@
 describe HerokuAutoscaler::NewRelicMetrics do
   let(:new_relic_metrics) { described_class.new(print: false) }
+  let(:cache) { HerokuAutoscaler::CacheStore.new }
 
   describe "queue_time" do
     let(:queue_time) do

@@ -3,9 +3,12 @@ require "heroku_autoscaler/alerter"
 require "heroku_autoscaler/cache_store"
 require "heroku_autoscaler/heroku"
 require "heroku_autoscaler/new_relic_metrics"
+require "heroku_autoscaler/setter"
 
 module HerokuAutoscaler
   class Scaler
+    include Setter
+
     attr_accessor :freq_upscale, :freq_downscale, :min_dynos, :max_dynos, :upscale_queue_time, :downscale_queue_time
 
     FREQ_UPSCALE         = 30 # seconds
@@ -14,10 +17,9 @@ module HerokuAutoscaler
     MAX_DYNOS            = 2
     UPSCALE_QUEUE_TIME   = 100 # ms
     DOWNSCALE_QUEUE_TIME = 30 # ms
-    SETTINGS             = %w(freq_upscale freq_downscale min_dynos max_dynos upscale_queue_time downscale_queue_time)
 
     def initialize(options = {})
-      SETTINGS.each { |setting| send("#{setting}=", setting_value(options, setting)) }
+      writers_setting(options)
     end
 
     def autoscale
@@ -27,14 +29,6 @@ module HerokuAutoscaler
     end
 
     private
-
-    def setting_value(options, setting)
-      options[setting.to_sym] || env_value(setting) || Object.const_get("#{self.class}::#{setting.upcase}")
-    end
-
-    def env_value(setting)
-      ENV[setting.upcase] && Integer(ENV[setting.upcase])
-    end
 
     def average_response_time
       queue_time.values.average_response_time
@@ -85,7 +79,7 @@ module HerokuAutoscaler
     end
 
     def heroku
-      @heroku ||= Heroku.new
+      @heroku ||= Heroku.new(cache)
     end
 
     def now
