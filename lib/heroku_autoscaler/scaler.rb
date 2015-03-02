@@ -9,7 +9,8 @@ module HerokuAutoscaler
   class Scaler
     include Setter
 
-    attr_accessor :freq_upscale, :freq_downscale, :min_dynos, :max_dynos, :upscale_queue_time, :downscale_queue_time
+    attr_accessor :freq_upscale, :freq_downscale, :min_dynos, :max_dynos,
+                  :upscale_queue_time, :downscale_queue_time
 
     FREQ_UPSCALE         = 30 # seconds
     FREQ_DOWNSCALE       = 60 # seconds
@@ -19,6 +20,7 @@ module HerokuAutoscaler
     DOWNSCALE_QUEUE_TIME = 30 # ms
 
     def initialize(options = {})
+      @options = options
       writers_setting(options)
     end
 
@@ -67,7 +69,7 @@ module HerokuAutoscaler
     end
 
     def alerter
-      @alerter ||= Alerter.new(cache)
+      @alerter ||= Alerter.new(cache, mailer, @options)
     end
 
     def cache
@@ -80,6 +82,16 @@ module HerokuAutoscaler
 
     def heroku
       @heroku ||= Heroku.new(cache)
+    end
+
+    def mailer
+      @mailer ||= begin
+        return unless @options[:send_email]
+
+        mailer = Mailer.new(@options[:email_config])
+        mailer.config!
+        mailer
+      end
     end
 
     def now

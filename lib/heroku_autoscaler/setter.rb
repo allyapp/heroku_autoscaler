@@ -17,7 +17,14 @@ module HerokuAutoscaler
     end
 
     def env_value(setting)
-      ENV[setting.upcase] && Integer(ENV[setting.upcase])
+      value = ENV[setting.upcase]
+      value &&
+        ( is_number?(value) && Integer(value) ||
+          !is_number?(value) && ENV[setting.upcase] )
+    end
+
+    def is_number?(value)
+      !!(value.match(/^(\d+)$/))
     end
   end
 end

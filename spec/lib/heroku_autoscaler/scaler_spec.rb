@@ -6,14 +6,30 @@ describe HerokuAutoscaler::Scaler do
       min_dynos:            1,
       max_dynos:            4,
       upscale_queue_time:   100,
-      downscale_queue_time: 30
+      downscale_queue_time: 30,
+      send_email:           send_email,
+      email_config:         email_config
     }
   end
-  let(:scaler)  { described_class.new(options) }
-  let(:dynos)   { 2 }
-  let(:metrics) { double(queue_time: double) }
-  let(:cache)   { HerokuAutoscaler::CacheStore.new }
-  let(:heroku_class) { HerokuAutoscaler::Heroku }
+  let(:email_config) do
+    {
+      delivery_method: :test,
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "test.com",
+      user_name: "user@test.com",
+      password: "pass",
+      enable_starttls_auto: true,
+      to: "customer@gmail.com"
+    }
+  end
+  let(:send_email)    { false }
+  let(:scaler)        { described_class.new(options) }
+  let(:dynos)         { 2 }
+  let(:queue_metrics) { double(:queue_metrics) }
+  let(:metrics)       { double(:metrics, queue_time: queue_metrics) }
+  let(:cache)         { HerokuAutoscaler::CacheStore.new }
+  let(:heroku_class)  { HerokuAutoscaler::Heroku }
   let(:alerter_class) { HerokuAutoscaler::Alerter }
 
   before do
@@ -97,10 +113,23 @@ describe HerokuAutoscaler::Scaler do
           end
 
           context "and when the dynos are equal than the maximum dynos allowed to scale up" do
-            let(:dynos) { 4 }
+            let(:dynos)  { 4 }
+            let(:mailer) { scaler.send(:mailer) }
+            let(:cache)  { scaler.send(:cache) }
+            let(:alerter_instance)  { double(:alerter_instance) }
+
+            before do
+              allow(alerter_instance).to receive(:failed_upscale_alert)
+            end
+
+            it "the alerter is initialized with the cache and the mailer" do
+              expect(alerter_class).to receive(:new).with(cache, mailer, options) { alerter_instance }
+              scaler.autoscale
+            end
 
             it "failed_upscale_alert is called" do
               expect_any_instance_of(alerter_class).to receive(:failed_upscale_alert)
+                .with(dynos, queue_metrics, scaler.freq_upscale, scaler.upscale_queue_time)
               scaler.autoscale
             end
 
@@ -172,6 +201,31 @@ describe HerokuAutoscaler::Scaler do
         let(:average_response_time) { 52 }
 
         it_behaves_like "doesn't scale dynos"
+      end
+    end
+  end
+
+  describe "mailer" do
+    let(:mailer) { scaler.send(:mailer) }
+    let(:mailer_instance) { double(:mailer_instance) }
+
+    context "when the option send_email is true" do
+      let(:send_email) { true }
+
+      before do
+        allow(mailer_instance).to receive(:config!)
+      end
+
+      it "returns the configured mailer" do
+        expect(HerokuAutoscaler::Mailer).to receive(:new).with(email_config) { mailer_instance }
+        expect(mailer_instance).to receive(:config!)
+        expect(mailer).to eq(mailer_instance)
+      end
+    end
+
+    context "when the option send_email is false" do
+      it "returns nil" do
+        expect(mailer).to be_nil
       end
     end
   end

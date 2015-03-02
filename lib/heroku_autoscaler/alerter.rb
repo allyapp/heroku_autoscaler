@@ -11,8 +11,9 @@ module HerokuAutoscaler
 
     attr_accessor :alert_frequency, :exec_frequency, :failed_upscales_alert
 
-    def initialize(cache, options = {})
-      @cache = cache
+    def initialize(cache, mailer, options = {})
+      @cache  = cache
+      @mailer = mailer
       writers_setting(options)
     end
 
@@ -23,15 +24,15 @@ module HerokuAutoscaler
     # If it tries to scale up, but the number of MAX_DYNOS restricts it
     def failed_upscale_alert(dynos, metrics, freq_upscale, upscale_queue_time)
       failed_upscales = failed_tries("failed-upscale", freq_upscale)
-      return unless failed_upscales >= FAILED_UPSCALES_ALERT
+      return if !@mailer || failed_upscales < FAILED_UPSCALES_ALERT
 
-      proc = proc { Mailer.request_queueing_alert(dynos, metrics, failed_upscales * freq_upscale, upscale_queue_time) }
+      proc = proc { mailer.request_queueing_alert(dynos, metrics, failed_upscales * freq_upscale, upscale_queue_time) }
       send_alert("failed-upscale", proc)
     end
 
     private
 
-    attr_reader :cache
+    attr_reader :cache, :mailer
 
     def failed_tries(failed_event, freq_upscale)
       failed_event_times = cache.fetch_number(failed_event)
