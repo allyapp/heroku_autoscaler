@@ -11,7 +11,7 @@ When the auto-scaler can't upscale dynos due the MAX_DYNOS was too small for a s
 ## Dependencies
 
 - Dalli cache store.
-- Heroku Scheduler.
+- A scheduler. It doesn't necessarily have to be set under the heroku infrastructure.
 - Mail (if you want to get email alerts).
 - NewRelic addon configured for the heroku instance.
 
@@ -39,7 +39,7 @@ In order to start using this gem, please read carefully all the configurable var
 
 To have it working it's mandatory to already have the following ENV variables set:
 
-#### External depencies. Heroku, NewRelic and Dalli
+#### External depencies: Heroku, NewRelic and Dalli
 
 ````ruby
 HEROKU_API_KEY = 12b5c169b-78a6-4ax-144b-7d9a17zd6050
@@ -96,6 +96,38 @@ email_config = {
 ````
 
 The sender will be set from the ``email_config[:user_name]`` while the receiver from ``email_config[:to]``.
+
+#### Scheduler
+
+After having configured the 3 sections above (external dependencies, auto-scaling and mailer), it's time to start running the heroku auto-scaler:
+
+````ruby
+options = {
+  logging: true,              # false by default. Logs WebFrontend/QueueTime metrics whenever the autoscale function is executed
+  send_email: true,           # false by default. Boolean required to send emails, even configuration is sent
+  email_config: email_config, # Taking as example the ruby hash defined previously
+}
+
+# If auto-scaling values are not set as ENV variables.
+# Values passed as params will have priority over ENV variables.
+# You might want to have some values set as ENV variables and other as arguments, it's up to you.
+
+autoscaling_options = {
+  min_dynos: 1,
+  max_dynos: 4,
+  freq_upscale: 30,          # 30 secs
+  freq_downscale: 60,        # 60 secs
+  failed_upscales_alert: 4,
+  alert_frequency: 60,       # 60 secs
+  upscale_queue_time: 100,   # 100 milisecs
+  downscale_queue_time: 30,  # 30 milisecs
+  exec_frequency: 15         # 15 milisecs
+}
+
+# This is the method that should be executed with the desired frequency using the scheduler
+
+HerokuAutoscaler::Scaler.new(options.merge(autoscaling_options)).scaler
+````
 
 ## Contributing
 
