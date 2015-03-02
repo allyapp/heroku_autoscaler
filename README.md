@@ -126,7 +126,7 @@ autoscaling_options = {
 
 # This is the method that should be executed with the desired frequency using the scheduler
 
-HerokuAutoscaler::Scaler.new(options.merge(autoscaling_options)).scaler
+HerokuAutoscaler::Scaler.new(options.merge(autoscaling_options)).autoscale
 ````
 
 ## Contributing
