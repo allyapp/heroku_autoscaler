@@ -29,7 +29,7 @@ module HerokuAutoscaler
       content = ""
       content += "===========================\n"
       content += "# Metric: #{name}\n"
-      timeslices.each { |timeslice| content += timeslice.to_s }
+      content += timeslice.to_s
       content += "===========================\n"
     end
   end

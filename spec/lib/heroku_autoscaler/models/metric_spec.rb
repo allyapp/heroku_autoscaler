@@ -83,4 +83,16 @@ describe HerokuAutoscaler::Metric do
       end
     end
   end
+
+  describe "print_summary" do
+    it "prints the content without crashing" do
+      metric.print_summary
+    end
+  end
+
+  describe "to_s" do
+    it "returns the content into a string" do
+      metric.to_s
+    end
+  end
 end

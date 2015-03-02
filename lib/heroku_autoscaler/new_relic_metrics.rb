@@ -8,7 +8,7 @@ module HerokuAutoscaler
     METRICS_DATA_URL  = "#{BASE_URL}/metrics/data.json"
 
     def initialize(options = {})
-      @print = options[:print]
+      @logging = options[:logging]
     end
 
     def metrics_list(page = 1)
@@ -48,7 +48,7 @@ module HerokuAutoscaler
     def parse_metrics(response)
       hash_metrics = JSON.parse(response.body)["metric_data"]["metrics"].first
       metric = Metric.new(hash_metrics)
-      metric.print_summary if @print
+      metric.print_summary if @logging
       metric
     end
   end

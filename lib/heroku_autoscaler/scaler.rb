@@ -77,7 +77,7 @@ module HerokuAutoscaler
     end
 
     def metrics
-      @new_relic_metrics ||= NewRelicMetrics.new
+      @new_relic_metrics ||= NewRelicMetrics.new(@options)
     end
 
     def heroku
