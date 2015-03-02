@@ -39,6 +39,8 @@ In order to start using this gem, please read carefully all the configurable var
 
 To have it working it's mandatory to already have the following ENV variables set:
 
+#### External depencies. Heroku, NewRelic and Dalli
+
 ````ruby
 HEROKU_API_KEY = 12b5c169b-78a6-4ax-144b-7d9a17zd6050
 HEROKU_APP_NAME = test-heroku-app
@@ -46,6 +48,8 @@ NEW_RELIC_API_KEY = 1ee6ffffef5e1f7e609d86aea050f6d123nasd124asd
 NEW_RELIC_APP_ID = 6425276
 MEMCACHE_SERVERS = 127.0.0.1
 ````
+
+#### Auto-scaling
 
 It's not mandatory, but advisable to also have the following variables set as ENV variables to quickly change a value without the need of deploying.
 All these variables can be also set when the ``HerokuAutoscaler::Scaler`` class is instanciated. 
@@ -74,7 +78,24 @@ Recommendation: start upscaling after 100ms if the availability is not too criti
 Recommendation: Leave a few miliseconds of margin to start downscaling.
 * ``exec_frequency:`` Frequency the scaler is being executed. It will be used for calculating the failed upsacles alert, it also has to be configured in the scheduler (seconds).
 
+#### Mailer
 
+As mailer, the gem [mail](https://github.com/mikel/mail) has been used to send the alert emails. The idea is to eventually decouple this depency, but for the time being it will be kept.
+
+````ruby
+email_config = {
+    delivery_method: :smtp,
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: "test.com",
+    user_name: "user@test.com",
+    password: "password",
+    enable_starttls_auto: true,
+    to: "developers@test.com"
+}
+````
+
+The sender will be set from the ``email_config[:user_name]`` while the receiver from ``email_config[:to]``.
 
 ## Contributing
 
