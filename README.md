@@ -6,14 +6,16 @@ Configurable heroku dynos' auto-scaler that read from NewRelic metrics in order 
 
 Initially it will only read the ``WebFrontend/QueueTime`` metric in the last minute time lapse to consider up or downscaling dynos according to the configuration values set.
 
-When the auto-scaler can't upscale dynos due the MAX_DYNOS was too small for a specified period of time, it will send an email alerting that this value should be increased with the last minute ``WebFrontend/QueueTime`` metrics summary.
+When the auto-scaler can't upscale dynos due the maximum number of dynos set was too small for a specified period of time, it will send an email alerting that this value should be increased with the last minute ``WebFrontend/QueueTime`` metrics summary.
 
 ## Dependencies
 
-- Dalli cache store.
-- A scheduler. It doesn't necessarily have to be set under the heroku infrastructure.
-- Mail (if you want to get email alerts).
-- NewRelic addon configured for the heroku instance.
+- [Dalli](https://github.com/mperham/dalli) cache store.
+- A scheduler. Here are some recommended alternatives:
+    * [Heroku scheduler](https://addons.heroku.com/scheduler)
+    * [Rufus scheduler](https://github.com/jmettraux/rufus-scheduler)
+- [Mail](https://github.com/mikel/mail) (if you want to get email alerts).
+- [New Relic](https://addons.heroku.com/newrelic) addon configured for the heroku instance.
 
 ## Installation
 
@@ -52,11 +54,11 @@ MEMCACHE_SERVERS = 127.0.0.1
 #### Auto-scaling
 
 It's not mandatory, but advisable to also have the following variables set as ENV variables to quickly change a value without the need of deploying.
-All these variables can be also set when the ``HerokuAutoscaler::Scaler`` class is instanciated. 
+All these variables can be also set when the ``HerokuAutoscaler::Scaler`` class is instantiated. 
 
 ````ruby
 MIN_DYNOS = 1
-MAX_DYNOS = 4
+MAX_DYNOS = 2
 FREQ_UPSCALE = 30
 FREQ_DOWNSCALE = 60
 FAILED_UPSCALES_ALERT = 4
@@ -66,6 +68,8 @@ DOWNSCALE_QUEUE_TIME = 30
 EXEC_FREQUENCY = 15
 ````
 
+If some of these variables are not set as ENV variable or passed in the arguments when the class is instantiated, the default values (which correspond the ones above) will be set. 
+
 * ``min_dynos:`` Minimum number of dynos it can be downscaled.
 * ``max_dynos:`` Maximum number of dynos it can be upscaled.
 * ``freq_upscale:`` Maximum frequency the heroku instance can upscale (seconds).
@@ -73,14 +77,14 @@ EXEC_FREQUENCY = 15
 * ``failed_upscales_alert:`` If the mailer is configured, the number of failed upscales that have to occur in order to send an alert email.
 * ``alert_frequency:`` Maximum frequency alert emails will be sent (seconds).
 * ``upscale_queue_time:`` Maximum queue time average to start upscaling (miliseconds).
-Recommendation: start upscaling after 100ms if the availability is not too critical.
+Recommendation: start upscaling after 100ms of request queueing time if the availability is not too critical.
 * ``downscale_queue_time:`` Minimum queue time average to start downscaling (miliseconds).
-Recommendation: Leave a few miliseconds of margin to start downscaling.
-* ``exec_frequency:`` Frequency the scaler is being executed. It will be used for calculating the failed upsacles alert, it also has to be configured in the scheduler (seconds).
+Recommendation: Set a few miliseconds of margin to start downscaling, don't set the value to 0ms because unless there's no server load, it might not downscale.
+* ``exec_frequency:`` Frequency the auto-scaler is being executed. It will be used for calculating the failed upscale alerts, it also has to be configured in the scheduler (seconds).
 
 #### Mailer
 
-As mailer, the gem [mail](https://github.com/mikel/mail) has been used to send the alert emails. The idea is to eventually decouple this depency, but for the time being it will be kept.
+As mailer, the gem [Mail](https://github.com/mikel/mail) has been used to send the alert emails. The idea is to eventually decouple this depency, but for the time being it will be kept.
 
 ````ruby
 email_config = {
