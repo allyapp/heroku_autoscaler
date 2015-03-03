@@ -1,8 +1,10 @@
 # HerokuAutoscaler
 
-WIP (Work In Progress)
+**WIP (Work In Progress)**
 
-Configurable heroku dynos' auto-scaler that read from NewRelic metrics in order to act upon the heroku instance configured.
+Auto-scaling is a cloud computing feature that adds or removes compute resources depending on their actual usage.
+
+This gem lets to configure a set of variables to auto-scale heroku dynos reading from New Relic metrics in order to act upon the heroku instance configured.
 
 Initially it will only read the ``WebFrontend/QueueTime`` metric in the last minute time lapse to consider up or downscaling dynos according to the configuration values set.
 
