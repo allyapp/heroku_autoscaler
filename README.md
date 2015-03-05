@@ -137,6 +137,10 @@ autoscaling_options = {
 HerokuAutoscaler::Scaler.new(options.merge(autoscaling_options)).autoscale
 ````
 
+## Examples of usage with a scheduler a scheduler
+
+## Tests
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/heroku_autoscaler/fork )
