@@ -45,6 +45,8 @@ To have it working it's mandatory to already have the following ENV variables se
 
 #### External depencies: Heroku, NewRelic and Dalli
 
+Note: These are fake Heroku and New Relic keys just to give an idea on how they'd look:
+
 ````ruby
 HEROKU_API_KEY = 12b5c169b-78a6-4ax-144b-7d9a17zd6050
 HEROKU_APP_NAME = test-heroku-app
