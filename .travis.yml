@@ -1,8 +1,10 @@
 script: bundle exec rspec
 language: ruby
 cache: bundler
+services:
+- memcached
 rvm:
-- 1.9.3
+# - 1.9.3
 - 2.0.0
 - 2.1.0
 - 2.1.1
