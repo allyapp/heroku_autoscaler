@@ -1,0 +1,55 @@
+<div class="metrics">
+  <h2><%= metric.name %></h2>
+
+  <h3>Timeslice</h3>
+  <table>
+    <tr>
+      <td class="label">From</td>
+      <td><%= metric.from %></td>
+    </tr>
+    <tr>
+      <td class="label">To</td>
+      <td><%= metric.to %></td>
+    </tr>
+  </table>
+
+  <br />
+
+  <h3>Metric values</h3>
+  <table>
+    <tr>
+      <td class="label">Metric</td>
+      <td class="label">Value</td>
+    </tr>
+    <tr>
+      <td>Average response time</td>
+      <td><%= metric.values.average_response_time %></td>
+    <tr>
+      <td>Calls per minute</td>
+      <td><%= metric.values.calls_per_minute %></td>
+    <tr>
+      <td>Call count</td>
+      <td><%= metric.values.call_count %></td>
+    <tr>
+      <td>Average value</td>
+      <td><%= metric.values.average_value %></td>
+    <tr>
+      <td>Min response time</td>
+      <td><%= metric.values.min_response_time %></td>
+    <tr>
+      <td>Max response time</td>
+      <td><%= metric.values.max_response_time %></td>
+    <tr>
+      <td>Average exclusive Time</td>
+      <td><%= metric.values.average_exclusive_time %></td>
+    <tr>
+      <td>Total call time per minute</td>
+      <td><%= metric.values.total_call_time_per_minute %></td>
+    <tr>
+      <td>Requests per minute</td>
+      <td><%= metric.values.requests_per_minute %></td>
+    <tr>
+      <td>Standard Deviation</td>
+      <td><%= metric.values.standard_deviation %></td>
+  </table>
+</div>

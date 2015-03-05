@@ -1,4 +1,5 @@
 require "mail"
+require "heroku_autoscaler/template_renderer"
 
 module HerokuAutoscaler
   class Mailer
@@ -22,19 +23,26 @@ module HerokuAutoscaler
     end
 
     def request_queueing_alert(dynos, metrics, time, max_queue_time)
-      message = "The average request queueing time is over #{max_queue_time} miliseconds"
-      message += "for more than #{time} seconds running with #{dynos} dynos"
-      message += "According to your traffic you should probably increase the maximum number of dynos, currently set to #{dynos}\n\n\n\n"
-      message += metrics.to_s
-      deliver("Performance Alert: Request Queueing average exceeded", message)
+      html_part, text_part = multipart_request_queueing_alert(dynos, metrics, time, max_queue_time)
+      deliver("Performance Alert: Request Queueing average exceeded", html_part, text_part)
     end
 
-    def deliver(subject, message)
-      mail         = Mail::Message.new
-      mail.from    = email_config[:user_name]
-      mail.to      = email_config[:to]
-      mail.body    = message
-      mail.subject = subject
+    def multipart_request_queueing_alert(dynos, metrics, time, max_queue_time)
+      %w(html text).map do |type|
+        Mail::Part.new do
+          content_type "text/html; charset=UTF-8" if type == "html"
+          body TemplateRenderer.alert(type, dynos, metrics, time, max_queue_time)
+        end
+      end
+    end
+
+    def deliver(subject, html_part, text_part)
+      mail           = Mail::Message.new
+      mail.from      = email_config[:user_name]
+      mail.to        = email_config[:to]
+      mail.subject   = subject
+      mail.html_part = html_part
+      mail.text_part = text_part
       mail.deliver
     end
   end

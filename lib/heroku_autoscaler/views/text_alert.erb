@@ -1,0 +1,20 @@
+According to your server load it's recommendable to increase the maximum number of dynos, currently set to <%= dynos %>, in order to avoid experiencing a long request queueing time.
+
+- The average request queueing time is over: <%= max_queue_time %> miliseconds
+- Time since the request queueing time is over the maximum specified: <%= time %> seconds
+- Maximum number of dynos to upscale set: <%= dynos %>
+
+
+
+<%= metric.name %>
+
+Timeslice
+
+From: <%= metric.from %>
+To: <%= metric.to %>
+
+Metric values
+
+<% metric.values.instance_variables.each do |instance_variable| %>
+  <%= instance_variable.to_s.gsub("@", "").capitalize.gsub(/_/, " ") %>: <%= metric.values.send(instance_variable.to_s.gsub("@", "")) %>
+<% end %>

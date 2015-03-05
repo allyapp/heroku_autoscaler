@@ -24,13 +24,5 @@ module HerokuAutoscaler
       puts "RPM:    #{values.calls_per_minute} | AverageResponse: #{values.average_response_time} | MaxResponse: #{values.max_response_time} | MinResponse: #{values.min_response_time}"
       puts "========================================================"
     end
-
-    def to_s
-      content = ""
-      content += "===========================\n"
-      content += "# Metric: #{name}\n"
-      content += timeslice.to_s
-      content += "===========================\n"
-    end
   end
 end

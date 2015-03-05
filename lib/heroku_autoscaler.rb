@@ -1,5 +1,6 @@
 require "heroku_autoscaler/version"
 require "heroku_autoscaler/models"
+require "heroku_autoscaler/template_renderer"
 require "heroku_autoscaler/error"
 require "heroku_autoscaler/mailer"
 require "heroku_autoscaler/cache_store"

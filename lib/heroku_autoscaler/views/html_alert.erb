@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    body { font-family: sans-serif; line-height: 150%; color: rgb(21, 21, 21); font-size: 15px; font-weight: 500; padding: 20px; }
+    table, th, td { border: 1px solid rgb(157, 157, 157); border-collapse: collapse; }
+    th, td { padding: 10px; }
+    td.label { background: rgb(52, 121, 189); color: white; }
+    .metrics { padding-left: 50px; }
+    </style>
+  </head>
+  <body>
+    <p>According to your server load it's recommendable to increase the maximum number of dynos, currently set to <b><%= dynos %></b>, in order to avoid experiencing a long request queueing time.</p>
+
+    <ul>
+      <li>
+        The average request queueing time is over: <b><%= max_queue_time %> miliseconds</b>
+      </li>
+      <li>
+        Time since the request queueing time is over the maximum specified: <b><%= time %> seconds</b>
+      </li>
+      <li>
+        Maximum number of dynos to upscale set: <b><%= dynos %></b>
+      </li>
+    </ul>
+
+    <br />
+
+    <div class="metrics">
+      <h2><%= metric.name %></h2>
+
+      <h3>Timeslice</h3>
+      <table>
+        <tr>
+          <td class="label">From</td>
+          <td><%= metric.from %></td>
+        </tr>
+        <tr>
+          <td class="label">To</td>
+          <td><%= metric.to %></td>
+        </tr>
+      </table>
+
+      <br />
+
+      <h3>Metric values</h3>
+      <table>
+        <tr>
+          <td class="label">Metric</td>
+          <td class="label">Value</td>
+        </tr>
+        <% metric.values.instance_variables.each do |instance_variable| %>
+          <tr>
+            <td><%= instance_variable.to_s.gsub("@", "").capitalize.gsub(/_/, " ") %></td>
+            <td><%= metric.values.send(instance_variable.to_s.gsub("@", "")) %></td>
+          <tr>
+        <% end %>
+      </table>
+    </div>
+  </body>
+</html>

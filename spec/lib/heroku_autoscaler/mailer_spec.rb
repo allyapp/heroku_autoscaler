@@ -26,12 +26,21 @@ describe HerokuAutoscaler::Mailer do
   describe "deliver" do
     include Mail::Matchers
 
-    let(:body)    { "Body: Test" }
-    let(:subject) { "Subjet: Testing" }
+    let(:html_part) do
+      Mail::Part.new do
+        content_type "text/html; charset=UTF-8"
+        body "<html><body></body></html>"
+      end
+    end
+    let(:text_part) do
+      Mail::Part.new { body "Text part" }
+    end
+    let(:subject) { "Testing" }
+
     before do
       Mail::TestMailer.deliveries.clear
       mailer.config!
-      mailer.deliver(subject, body)
+      mailer.deliver(subject, html_part, text_part)
     end
 
     it "sends the email" do
@@ -48,10 +57,6 @@ describe HerokuAutoscaler::Mailer do
 
     it "sends the subject in the email" do
       should have_sent_email.with_subject(subject)
-    end
-
-    it "sends the body in the email" do
-      should have_sent_email.with_body(body)
     end
   end
 end
