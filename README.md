@@ -1,5 +1,6 @@
 # HerokuAutoscaler
 
+[![Build Status](https://travis-ci.org/yonelacort/heroku_autoscaler.svg?branch=master)](https://travis-ci.org/yonelacort/heroku_autoscaler)
 [![Code Climate](https://codeclimate.com/github/yonelacort/heroku_autoscaler/badges/gpa.svg)](https://codeclimate.com/github/yonelacort/heroku_autoscaler)
 
 Auto-scaling is a cloud computing feature that adds or removes compute resources depending on their actual usage.
