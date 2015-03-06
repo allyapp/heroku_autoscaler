@@ -1,6 +1,8 @@
 require "bundler/setup"
 Bundler.setup
 
+ENV["TZ"] = "CET"
+
 require "heroku_autoscaler"
 require "vcr"
 

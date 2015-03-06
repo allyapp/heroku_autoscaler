@@ -31,11 +31,11 @@ describe HerokuAutoscaler::Metric do
     end
 
     it "from" do
-      expect(metric.from.to_s).to eq("2015-02-27 10:45:52 +0100")
+      expect(metric.from.localtime.to_s).to eq("2015-02-27 10:45:52 +0100")
     end
 
     it "to" do
-      expect(metric.to.to_s).to eq("2015-02-27 10:46:00 +0100")
+      expect(metric.to.localtime.to_s).to eq("2015-02-27 10:46:00 +0100")
     end
 
     describe "values" do
