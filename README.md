@@ -47,7 +47,7 @@ To have it working it's mandatory to already have the following ENV variables se
 
 #### External depencies: Heroku, NewRelic and Dalli
 
-Note: These are fake Heroku and New Relic keys just to give an idea on how they'd look:
+Note: These are fake Heroku and New Relic values just to give an idea on how they'd look:
 
 ````ruby
 HEROKU_API_KEY = 12b5c169b-78a6-4ax-144b-7d9a17zd6050
@@ -60,18 +60,18 @@ MEMCACHE_SERVERS = 127.0.0.1
 #### Auto-scaling
 
 It's not mandatory, but advisable to also have the following variables set as ENV variables to quickly change a value without the need of deploying.
-All these variables can be also set when the ``HerokuAutoscaler::Scaler`` class is instantiated. 
+All these variables can be also set when the ``HerokuAutoscaler::Scaler`` class is instantiated.
 
 ````ruby
-MIN_DYNOS = 1
-MAX_DYNOS = 2
-FREQ_UPSCALE = 30
-FREQ_DOWNSCALE = 60
-FAILED_UPSCALES_ALERT = 4
-ALERT_FREQUENCY = 60
-UPSCALE_QUEUE_TIME = 100
-DOWNSCALE_QUEUE_TIME = 30
-EXEC_FREQUENCY = 15
+AUTOSCALER_MIN_DYNOS = 1
+AUTOSCALER_MAX_DYNOS = 2
+AUTOSCALER_FREQ_UPSCALE = 30
+AUTOSCALER_FREQ_DOWNSCALE = 60
+AUTOSCALER_FAILED_UPSCALES_ALERT = 4
+AUTOSCALER_ALERT_FREQUENCY = 60
+AUTOSCALER_UPSCALE_QUEUE_TIME = 100
+AUTOSCALER_DOWNSCALE_QUEUE_TIME = 30
+AUTOSCALER_EXEC_FREQUENCY = 15
 ````
 
 If some of these variables are not set as ENV variable or passed in the arguments when the class is instantiated, the default values (which correspond the ones above) will be set. 

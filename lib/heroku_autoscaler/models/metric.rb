@@ -21,7 +21,7 @@ module HerokuAutoscaler
       puts "Metric: #{name}"
       puts "From:   #{from}"
       puts "To:     #{to}"
-      puts "RPM:    #{values.calls_per_minute} | AverageResponse: #{values.average_response_time} | MaxResponse: #{values.max_response_time} | MinResponse: #{values.min_response_time}"
+      puts "RPM:    #{values.calls_per_minute} | AverageResponse: #{values.average_response_time}ms | MaxResponse: #{values.max_response_time}ms | MinResponse: #{values.min_response_time}ms"
       puts "========================================================"
     end
   end
