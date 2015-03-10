@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/yonelacort/heroku_autoscaler.svg?branch=master)](https://travis-ci.org/yonelacort/heroku_autoscaler)
 [![Code Climate](https://codeclimate.com/github/yonelacort/heroku_autoscaler/badges/gpa.svg)](https://codeclimate.com/github/yonelacort/heroku_autoscaler)
 
-Auto-scaling is a cloud computing feature that adds or removes compute resources depending on their actual usage.
+**Auto-scaling** is a cloud computing feature that adds or removes compute resources depending on their actual usage.
 
 This gem lets to configure a set of variables to auto-scale heroku dynos reading from New Relic metrics in order to act upon the heroku instance configured. The only downside of using New Relic metrics is that has a delay of 1 minute.
 
