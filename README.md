@@ -9,7 +9,7 @@ This gem lets to configure a set of variables to auto-scale heroku dynos reading
 
 Initially it will only read the ``WebFrontend/QueueTime`` metric in the last minute time lapse to consider up or downscaling dynos according to the configuration values set.
 
-When the auto-scaler can't upscale dynos due the maximum number of dynos set was too small for a specified period of time, it will send an email alerting that this value should be increased with the last minute ``WebFrontend/QueueTime`` metrics summary.
+When the auto-scaler can't upscale dynos due the maximum number of dynos for a specified period of time due this number was too low according to the server load needs, it will send an email alerting that this value should be increased with the last minute ``WebFrontend/QueueTime`` metrics summary.
 
 
 ## Dependencies
@@ -74,7 +74,7 @@ AUTOSCALER_DOWNSCALE_QUEUE_TIME = 30
 AUTOSCALER_EXEC_FREQUENCY = 15
 ````
 
-If some of these variables are not set as ENV variable or passed in the arguments when the class is instantiated, the default values (which correspond the ones above) will be set. 
+If some of these variables are not set as ENV variable or passed in the arguments when the class is instantiated, the default values (which correspond the ones above) will be set.
 
 * ``min_dynos:`` Minimum number of dynos it can be downscaled.
 * ``max_dynos:`` Maximum number of dynos it can be upscaled.
@@ -135,13 +135,20 @@ autoscaling_options = {
 }
 
 # This is the method that should be executed with the desired frequency using the scheduler
-
-HerokuAutoscaler::Scaler.new(options.merge(autoscaling_options)).autoscale
+options.merge!(autoscaling_options)
+HerokuAutoscaler::Scaler.new(options).autoscale
 ````
 
-## Examples of usage with a scheduler a scheduler
+## Examples of usage with a scheduler
+
+### Rufus scheduler
 
 ## Tests
+
+If you want to contribute, to run tests locally you'll need to run them using [Foreman](https://github.com/ddollar/foreman)
+    $ foreman run bundle exec rspec
+
+The acceptance tests were created reproducing the exact scenarios making use of [ruby-jmeter](https://github.com/flood-io/ruby-jmeter) against a real heroku app. Heroku and NewRelic real ENV variables have been replaced in the ``.env`` file in this gem and also in the recorded fixtures.
 
 ## Contributing
 

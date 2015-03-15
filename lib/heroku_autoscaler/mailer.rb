@@ -3,7 +3,6 @@ require "heroku_autoscaler/template_renderer"
 
 module HerokuAutoscaler
   class Mailer
-
     attr_reader :email_config
 
     def initialize(email_config)

@@ -50,4 +50,3 @@ describe HerokuAutoscaler::TemplateRenderer do
     end
   end
 end
-

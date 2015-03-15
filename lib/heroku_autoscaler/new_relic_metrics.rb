@@ -2,6 +2,7 @@ require "faraday"
 require "heroku_autoscaler/models"
 
 module HerokuAutoscaler
+  # https://docs.newrelic.com/docs/apm/other-features/metrics/metric-types
   class NewRelicMetrics
     BASE_URL          = "https://api.newrelic.com/v2/applications/#{ENV.fetch('NEW_RELIC_APP_ID')}"
     METRICS_URL       = "#{BASE_URL}/metrics.json"
@@ -16,15 +17,23 @@ module HerokuAutoscaler
     end
 
     def queue_time
-      execute(METRICS_DATA_URL,
-              "names[]"   => "WebFrontend/QueueTime",
-              "from"      => from_time,
-              "to"        => to_time,
-              "summarize" => true
-      )
+      execute(METRICS_DATA_URL, metric_options("WebFrontend/QueueTime"))
+    end
+
+    def http_dispatcher
+      execute(METRICS_DATA_URL, metric_options("HttpDispatcher"))
     end
 
     private
+
+    def metric_options(name)
+      {
+        "names[]"   => name,
+        "from"      => from_time,
+        "to"        => to_time,
+        "summarize" => true
+      }
+    end
 
     def from_time
       (Time.now - 60).to_s

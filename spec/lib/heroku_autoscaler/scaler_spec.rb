@@ -13,21 +13,21 @@ describe HerokuAutoscaler::Scaler do
   end
   let(:email_config) do
     {
-      delivery_method: :test,
-      address: "smtp.gmail.com",
-      port: 587,
-      domain: "test.com",
-      user_name: "user@test.com",
-      password: "pass",
+      delivery_method:      :test,
+      address:              "smtp.gmail.com",
+      port:                 587,
+      domain:               "test.com",
+      user_name:            "user@test.com",
+      password:             "pass",
       enable_starttls_auto: true,
-      to: "customer@gmail.com"
+      to:                   "customer@gmail.com"
     }
   end
   let(:send_email)    { false }
   let(:scaler)        { described_class.new(options) }
   let(:dynos)         { 2 }
   let(:queue_metrics) { double(:queue_metrics) }
-  let(:metrics)       { double(:metrics, queue_time: queue_metrics) }
+  let(:metrics)       { double(:metrics, queue_time: queue_metrics, queue_average_response_time: average_response_time) }
   let(:cache)         { HerokuAutoscaler::CacheStore.new }
   let(:heroku_class)  { HerokuAutoscaler::Heroku }
   let(:alerter_class) { HerokuAutoscaler::Alerter }
@@ -35,7 +35,6 @@ describe HerokuAutoscaler::Scaler do
   before do
     allow_any_instance_of(heroku_class).to receive(:dynos) { dynos }
     allow_any_instance_of(described_class).to receive(:metrics) { metrics }
-    allow_any_instance_of(described_class).to receive(:average_response_time) { average_response_time }
     allow_any_instance_of(alerter_class).to receive(:failed_upscale_alert)
   end
 
@@ -114,7 +113,7 @@ describe HerokuAutoscaler::Scaler do
 
           context "and when the dynos are equal than the maximum dynos allowed to scale up" do
             let(:dynos)  { 4 }
-            let(:mailer) { scaler.send(:mailer) }
+            let(:mailer) { HerokuAutoscaler::Alerter.new(cache, options).send(:mailer) }
             let(:cache)  { scaler.send(:cache) }
             let(:alerter_instance)  { double(:alerter_instance) }
 
@@ -123,7 +122,7 @@ describe HerokuAutoscaler::Scaler do
             end
 
             it "the alerter is initialized with the cache and the mailer" do
-              expect(alerter_class).to receive(:new).with(cache, mailer, options) { alerter_instance }
+              expect(alerter_class).to receive(:new).with(cache, options) { alerter_instance }
               scaler.autoscale
             end
 
@@ -206,7 +205,7 @@ describe HerokuAutoscaler::Scaler do
   end
 
   describe "mailer" do
-    let(:mailer) { scaler.send(:mailer) }
+    let(:mailer) { HerokuAutoscaler::Alerter.new(cache, options).send(:mailer) }
     let(:mailer_instance) { double(:mailer_instance) }
 
     context "when the option send_email is true" do

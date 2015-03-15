@@ -9,7 +9,7 @@ module HerokuAutoscaler
     private
 
     def writers_methods
-      self.methods.grep(/\w=/) { |m| m.to_s.match(/^(\w+)=/)[1] }
+      methods.grep(/\w=/) { |m| m.to_s.match(/^(\w+)=/)[1] }
     end
 
     def value_setting(options, setting)
@@ -19,8 +19,8 @@ module HerokuAutoscaler
     def env_value(setting)
       value = ENV["AUTOSCALER_#{setting.upcase}"]
       value &&
-        ( is_number?(value) && Integer(value) ||
-          !is_number?(value) && value )
+        (is_number?(value) && Integer(value) ||
+          !is_number?(value) && value)
     end
 
     def is_number?(value)

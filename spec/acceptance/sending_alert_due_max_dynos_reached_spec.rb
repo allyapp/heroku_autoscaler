@@ -2,23 +2,23 @@ describe "Sending email alert due maximum of dynos reached" do
   let(:cache) { HerokuAutoscaler::CacheStore.new }
   let(:email_config) do
     {
-      delivery_method: :test,
-      address: "smtp.gmail.com",
-      port: 587,
-      domain: "test.com",
-      user_name: "user@test.com",
-      password: "pass",
+      delivery_method:      :test,
+      address:              "smtp.gmail.com",
+      port:                 587,
+      domain:               "test.com",
+      user_name:            "user@test.com",
+      password:             "pass",
       enable_starttls_auto: true,
-      to: "customer@gmail.com"
+      to:                   "customer@gmail.com"
     }
   end
   let(:config) do
     {
-      logging: true,
-      send_email: true,
-      email_config: email_config,
+      logging:               true,
+      send_email:            true,
+      email_config:          email_config,
       failed_upscales_alert: 5,
-      max_dynos: 1
+      max_dynos:             1
     }
   end
 
@@ -70,7 +70,6 @@ describe "Sending email alert due maximum of dynos reached" do
     end
 
     describe "but the tries to upscale reached the threshold to send the alert" do
-
       it "sends an email" do
         autoscale
         should have_sent_email

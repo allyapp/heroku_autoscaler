@@ -8,7 +8,7 @@ describe HerokuAutoscaler::Alerter do
   let(:alert_name) { "failed-upscale" }
   let(:options) { {} }
   let(:mailer) { HerokuAutoscaler::Mailer.new({}) }
-  let(:alerter) { described_class.new(cache, mailer) }
+  let(:alerter) { described_class.new(cache, {}) }
   let(:failed_upscale_alert) do
     alerter.failed_upscale_alert(dynos, metrics, freq_upscale, upscale_queue_time)
   end
@@ -16,6 +16,7 @@ describe HerokuAutoscaler::Alerter do
   before do
     allow_any_instance_of(HerokuAutoscaler::Mailer).to receive(:request_queueing_alert)
     allow_any_instance_of(HerokuAutoscaler::CacheStore).to receive(:set_now)
+    allow_any_instance_of(described_class).to receive(:mailer) { mailer }
   end
 
   RSpec.shared_examples "sends a request_queueing_alert alert" do
@@ -70,7 +71,9 @@ describe HerokuAutoscaler::Alerter do
         end
 
         context "and the mailer is not configured" do
-          let(:mailer) { nil }
+          before do
+            allow_any_instance_of(described_class).to receive(:mailer) { nil }
+          end
 
           it_behaves_like "doesn't send a request_queueing_alert alert"
         end
